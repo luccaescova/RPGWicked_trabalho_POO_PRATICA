@@ -12,7 +12,9 @@ public class Glinda extends Personagem {
 
     @Override
     public void usarHabilidade(Personagem alvo) {
-        System.out.println(nome + " usa feitiço encantador!");
-        alvo.pontosVida -= ataque + 3;
+        System.out.println(nome + " usa Feitiço Encantador!");
+        int dano = this.ataque + 3 - alvo.defesa;
+        if (dano < 0) dano = 0;
+        alvo.receberDano(dano);
     }
 }

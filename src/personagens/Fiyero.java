@@ -12,7 +12,9 @@ public class Fiyero extends Personagem {
 
     @Override
     public void usarHabilidade(Personagem alvo) {
-        System.out.println(nome + " desfere ataque poderoso!");
-        alvo.pontosVida -= ataque;
+        System.out.println(nome + " desfere um ataque poderoso!");
+        int dano = this.ataque + 2 - alvo.defesa;
+        if (dano < 0) dano = 0;
+        alvo.receberDano(dano);
     }
 }

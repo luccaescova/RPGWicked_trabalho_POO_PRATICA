@@ -1,6 +1,6 @@
 package itens;
 
-public class Item implements Cloneable, Comparable<Item> {
+public class Item implements Comparable<Item>, Cloneable {
     private String nome;
     private String descricao;
     private String efeito;
@@ -13,37 +13,21 @@ public class Item implements Cloneable, Comparable<Item> {
         this.quantidade = quantidade;
     }
 
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
+    public int getQuantidade() { return quantidade; }
+    public void setQuantidade(int quantidade) { this.quantidade = quantidade; }
 
-    public int getQuantidade() {
-        return quantidade;
-    }
-
-    public void usar() {
-        if (quantidade > 0) quantidade--;
-    }
-
-    public void aumentarQuantidade(int qtd) {
-        quantidade += qtd;
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Item i) {
+            return nome.equalsIgnoreCase(i.nome);
+        }
+        return false;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Item)) return false;
-        Item outro = (Item) obj;
-        return this.nome.equalsIgnoreCase(outro.nome);
-    }
-
-    @Override
-    public int hashCode() {
-        return nome.toLowerCase().hashCode();
-    }
-
-    @Override
-    public int compareTo(Item outro) {
-        return this.nome.compareToIgnoreCase(outro.nome);
+    public int compareTo(Item i) {
+        return nome.compareToIgnoreCase(i.nome);
     }
 
     @Override
@@ -53,6 +37,6 @@ public class Item implements Cloneable, Comparable<Item> {
 
     @Override
     public String toString() {
-        return nome + " x" + quantidade + " (" + efeito + ")";
+        return nome + " (" + quantidade + "x) - " + descricao;
     }
 }

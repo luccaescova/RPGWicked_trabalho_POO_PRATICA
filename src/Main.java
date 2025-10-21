@@ -1,5 +1,4 @@
-import personagens.*;
-import itens.*;
+import jogo.Jogo;
 
 public class Main {
     public static void main(String[] args) {

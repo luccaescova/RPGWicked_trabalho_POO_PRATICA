@@ -13,6 +13,8 @@ public class Inimigo extends Personagem {
     @Override
     public void usarHabilidade(Personagem alvo) {
         System.out.println(nome + " ataca ferozmente!");
-        alvo.pontosVida -= ataque;
+        int dano = this.ataque - alvo.defesa;
+        if (dano < 0) dano = 0;
+        alvo.receberDano(dano);
     }
 }
