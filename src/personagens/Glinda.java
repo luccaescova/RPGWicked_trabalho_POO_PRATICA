@@ -1,4 +1,4 @@
-package personagens;
+package jogo.personagens;
 
 public class Glinda extends Personagem {
 

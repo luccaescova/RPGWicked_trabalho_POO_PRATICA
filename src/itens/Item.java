@@ -1,4 +1,4 @@
-package itens;
+package jogo.itens;
 
 public class Item implements Comparable<Item>, Cloneable {
     private String nome;
@@ -13,16 +13,31 @@ public class Item implements Comparable<Item>, Cloneable {
         this.quantidade = quantidade;
     }
 
-    public String getNome() { return nome; }
-    public int getQuantidade() { return quantidade; }
-    public void setQuantidade(int quantidade) { this.quantidade = quantidade; }
+    public String getNome() {
+        return nome;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        if (quantidade >= 0) {
+            this.quantidade = quantidade;
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (o instanceof Item i) {
-            return nome.equalsIgnoreCase(i.nome);
-        }
-        return false;
+        if (this == o) return true;
+        if (!(o instanceof Item)) return false;
+        Item i = (Item) o;
+        return nome.equalsIgnoreCase(i.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return nome.toLowerCase().hashCode();
     }
 
     @Override
@@ -32,6 +47,7 @@ public class Item implements Comparable<Item>, Cloneable {
 
     @Override
     public Item clone() {
+        // Retorna uma nova instância com os mesmos dados
         return new Item(nome, descricao, efeito, quantidade);
     }
 

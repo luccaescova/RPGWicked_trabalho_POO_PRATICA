@@ -1,4 +1,6 @@
-import jogo.Jogo;
+package jogo;
+
+import jogo.Jogo.Jogo;
 
 public class Main {
     public static void main(String[] args) {

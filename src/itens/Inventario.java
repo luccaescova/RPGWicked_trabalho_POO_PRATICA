@@ -1,4 +1,4 @@
-package itens;
+package jogo.itens;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,7 +7,6 @@ import java.util.Iterator;
 public class Inventario implements Cloneable {
     private ArrayList<Item> itens = new ArrayList<>();
 
-    // Método principal usado internamente: adiciona Item (mantém ordenação)
     public void adicionar(Item item) {
         for (Item i : itens) {
             if (i.equals(item)) {
@@ -20,12 +19,10 @@ public class Inventario implements Cloneable {
         Collections.sort(itens);
     }
 
-    // Compatibilidade com o nome usado no Jogo: adicionarItem
     public void adicionarItem(Item item) {
         adicionar(item);
     }
 
-    // Remove UMA unidade do item com o nome dado. Retorna true se removeu algo, false caso não possua.
     public boolean removerItem(String nome) {
         Iterator<Item> it = itens.iterator();
         while (it.hasNext()) {
@@ -41,17 +38,6 @@ public class Inventario implements Cloneable {
             }
         }
         return false;
-    }
-
-    // Também ofereço um método que remove pelo objeto Item, caso outras partes do código usem
-    public void remover(Item item) {
-        for (Item i : new ArrayList<>(itens)) {
-            if (i.equals(item)) {
-                i.setQuantidade(i.getQuantidade() - 1);
-                if (i.getQuantidade() <= 0) itens.remove(i);
-                break;
-            }
-        }
     }
 
     public void listarItens() {
@@ -77,4 +63,15 @@ public class Inventario implements Cloneable {
         }
         return copia;
     }
+
+    public int contarItem(String nome) {
+        int count = 0;
+        for (Item item : itens) {  // 'itens' é a lista interna de itens do inventário
+            if (item.getNome().equalsIgnoreCase(nome)) {
+                count += item.getQuantidade();
+            }
+        }
+        return count;
+    }
+
 }

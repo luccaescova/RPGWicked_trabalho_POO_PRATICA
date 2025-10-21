@@ -1,4 +1,4 @@
-package personagens;
+package jogo.personagens;
 
 public class Fiyero extends Personagem {
 

@@ -1,4 +1,4 @@
-package Util;
+package jogo.Util;
 
 import java.util.Random;
 

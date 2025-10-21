@@ -1,18 +1,20 @@
-package personagens;
+package jogo.personagens;
 
-import itens.Inventario;
+import jogo.itens.Inventario;
 
 public abstract class Personagem implements Cloneable {
-    protected String nome;  // Alterado para protected para permitir acesso direto em subclasses (evita erros de acesso privado)
-    protected int pontosVida;  // Alterado para protected
-    protected int ataque;  // Alterado para protected
-    protected int defesa;  // Alterado para protected
+    protected String nome;
+    protected int pontosVida;
+    protected int vidaMaxima;
+    protected int ataque;
+    protected int defesa;
     protected int nivel;
     private Inventario inventario;
 
     public Personagem() {
         this.nome = "Desconhecido";
-        this.pontosVida = 100;
+        this.vidaMaxima = 100;
+        this.pontosVida = vidaMaxima;
         this.ataque = 10;
         this.defesa = 5;
         this.nivel = 1;
@@ -21,6 +23,7 @@ public abstract class Personagem implements Cloneable {
 
     public Personagem(String nome, int pontosVida, int ataque, int defesa, int nivel) {
         this.nome = nome;
+        this.vidaMaxima = pontosVida;
         this.pontosVida = pontosVida;
         this.ataque = ataque;
         this.defesa = defesa;
@@ -29,57 +32,56 @@ public abstract class Personagem implements Cloneable {
     }
 
     public Personagem(Personagem outro) {
-        // Usando getters para consistência (embora acesso direto também funcione, pois estamos na mesma classe)
         this.nome = outro.getNome();
+        this.vidaMaxima = outro.getVidaMaxima();
         this.pontosVida = outro.getPontosVida();
         this.ataque = outro.getAtaque();
         this.defesa = outro.getDefesa();
-        this.nivel = outro.nivel;  // nivel já é protected, acesso direto ok
-        this.inventario = outro.getInventario().clone();  // Usando getter para inventario
+        this.nivel = outro.nivel;
+        this.inventario = outro.getInventario().clone();
     }
 
-    // 🔹 Getters (mantidos)
     public String getNome() { return nome; }
     public int getPontosVida() { return pontosVida; }
+    public int getVidaMaxima() { return vidaMaxima; }
     public int getAtaque() { return ataque; }
     public int getDefesa() { return defesa; }
     public Inventario getInventario() { return inventario; }
 
-    // 🔹 Setters adicionados para permitir modificações controladas (com validações básicas)
     public void setNome(String nome) {
-        if (nome != null && !nome.trim().isEmpty()) {
-            this.nome = nome;
-        } else {
-            System.out.println("Nome inválido! Mantendo o atual.");
-        }
+        if (nome != null && !nome.trim().isEmpty()) this.nome = nome;
     }
 
     public void setPontosVida(int pontosVida) {
-        if (pontosVida >= 0) {
-            this.pontosVida = pontosVida;
+        if (pontosVida > vidaMaxima) {
+            this.pontosVida = vidaMaxima;
+        } else if (pontosVida < 0) {
+            this.pontosVida = 0;
         } else {
-            this.pontosVida = 0;  // Evita valores negativos
+            this.pontosVida = pontosVida;
+        }
+    }
+
+    public void setVidaMaxima(int vidaMaxima) {
+        if (vidaMaxima > 0) {
+            this.vidaMaxima = vidaMaxima;
+            if (this.pontosVida > vidaMaxima) {
+                this.pontosVida = vidaMaxima;
+            }
         }
     }
 
     public void setAtaque(int ataque) {
-        if (ataque >= 0) {
-            this.ataque = ataque;
-        } else {
-            System.out.println("Ataque não pode ser negativo! Mantendo o atual.");
-        }
+        if (ataque >= 0) this.ataque = ataque;
     }
 
     public void setDefesa(int defesa) {
-        if (defesa >= 0) {
-            this.defesa = defesa;
-        } else {
-            System.out.println("Defesa não pode ser negativa! Mantendo o atual.");
-        }
+        if (defesa >= 0) this.defesa = defesa;
     }
 
-    // 🔹 Outros métodos (mantidos)
-    public boolean estaVivo() { return pontosVida > 0; }
+    public boolean estaVivo() {
+        return pontosVida > 0;
+    }
 
     public void atacar(Personagem alvo, int rolagemDado) {
         int dano = (this.ataque + rolagemDado) - alvo.getDefesa();
@@ -89,8 +91,7 @@ public abstract class Personagem implements Cloneable {
     }
 
     public void receberDano(int dano) {
-        this.pontosVida -= dano;
-        if (this.pontosVida < 0) this.pontosVida = 0;
+        setPontosVida(this.pontosVida - dano);
         System.out.println(this.nome + " agora tem " + this.pontosVida + " de HP.");
     }
 
@@ -98,7 +99,7 @@ public abstract class Personagem implements Cloneable {
 
     @Override
     public String toString() {
-        return nome + " [HP=" + pontosVida + ", ATK=" + ataque + ", DEF=" + defesa + ", NIVEL=" + nivel + "]";
+        return nome + " [HP=" + pontosVida + "/" + vidaMaxima + ", ATK=" + ataque + ", DEF=" + defesa + ", NIVEL=" + nivel + "]";
     }
 
     @Override
